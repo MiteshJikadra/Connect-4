@@ -10,13 +10,12 @@ public class gameController1 : MonoBehaviour
     public GameObject[] spaceList;
     public GameObject marker;
 
-    public Button leftButton, dropbutton, rightbutton;// winbutton;
-    //public Text winText;
+    public Button leftButton, dropbutton, rightbutton;
     bool lInteract = true, rIntract = true, dIntract = true;
     float markerpos = 0;
     int colValue;
     int[] coreSpaces = new int[6];
-    int[] bottomMark = new int[7] { 5, 5, 5, 5, 5, 5, 5 };
+    int[] bottomM = new int[7] { 5, 5, 5, 5, 5, 5, 5 };
     int dropCount = 1;
     Color coreColor;
     public GameObject redwins;
@@ -26,7 +25,7 @@ public class gameController1 : MonoBehaviour
     public GameObject gameovereffect;
     public static gameController1 GC1;
     bool isFirsttime;
-    // Start is called before the first frame update
+   
     private void Awake()
     {
         GC1 = this;
@@ -38,12 +37,10 @@ public class gameController1 : MonoBehaviour
 
         leftButton.onClick.AddListener(LeftClick);
         rightbutton.onClick.AddListener(RightClick);
-        //winbutton.interactable = false;
-       // winbutton.GetComponent<Image>().color = Color.clear;
-       // winText.GetComponent<Text>().color = Color.clear;
+       
     }
 
-    // Update is called once per frame
+   
     public void Update()
     {
         leftButton.interactable = lInteract;
@@ -87,7 +84,7 @@ public class gameController1 : MonoBehaviour
 
             rIntract = true;
             marker.transform.position += new Vector3(150f, 0f, 0f);
-            //markerpos = 37.5f;
+           
             markerpos += 75f;
 
         }
@@ -96,11 +93,11 @@ public class gameController1 : MonoBehaviour
     public void DropClick()
     {
         balleffect.SetActive(true);
-        //balleffect.Stop();
-        if (spaceList[coreSpaces[bottomMark[colValue]]].GetComponent<Image>().color == Color.white)
-            spaceList[coreSpaces[bottomMark[colValue]]].GetComponent<Image>().color = coreColor;
+        
+        if (spaceList[coreSpaces[bottomM[colValue]]].GetComponent<Image>().color == Color.white)
+            spaceList[coreSpaces[bottomM[colValue]]].GetComponent<Image>().color = coreColor;
 
-        bottomMark[colValue]--;
+        bottomM[colValue]--;
         dropCount++;
 
         ColUpdate();
@@ -108,9 +105,7 @@ public class gameController1 : MonoBehaviour
    public void ColUpdate()
     {
         winCheck();
-        //winbutton.interactable = false;
-        //winbutton.GetComponent<Image>().color = Color.clear;
-        //winText.GetComponent<Text>().color = Color.clear;
+        
         for (int i = 0; i < 7; i++)
         {
             if (markerpos == (75 * i) - 225)
@@ -123,10 +118,10 @@ public class gameController1 : MonoBehaviour
         for (int j = 0; j < 6; j++)
             coreSpaces[j] = (7 * j) + colValue;
 
-        if (bottomMark[colValue] <= -1)
+        if (bottomM[colValue] <= -1)
         {
             dIntract = false;
-            bottomMark[colValue] = -1;
+            bottomM[colValue] = -1;
         }
         else
         {
@@ -159,7 +154,7 @@ public class gameController1 : MonoBehaviour
             {
                 if (spaceList[col + (row * 7)].GetComponent<Image>().color == coreColor && spaceList[col + (row * 7) + 1].GetComponent<Image>().color == coreColor && spaceList[col + (row * 7) + 2].GetComponent<Image>().color == coreColor && spaceList[col + (row * 7) + 3].GetComponent<Image>().color == coreColor)
                 {
-                    winner(coreColor);
+                    winnerColor(coreColor);
                 }
                 else
                 {
@@ -174,7 +169,7 @@ public class gameController1 : MonoBehaviour
             {
                 if (spaceList[col + (row * 7)].GetComponent<Image>().color == coreColor && spaceList[col + (row * 7) + 7].GetComponent<Image>().color == coreColor && spaceList[col + (row * 7) + 14].GetComponent<Image>().color == coreColor && spaceList[col + (row * 7) + 21].GetComponent<Image>().color == coreColor)
                 {
-                    winner(coreColor);
+                    winnerColor(coreColor);
                 }
             }
         }
@@ -185,7 +180,7 @@ public class gameController1 : MonoBehaviour
             {
                 if (spaceList[col + (row * 4)].GetComponent<Image>().color == coreColor && spaceList[col + (row * 7) + 8].GetComponent<Image>().color == coreColor && spaceList[col + (row * 7) + 16].GetComponent<Image>().color == coreColor && spaceList[col + (row * 7) + 24].GetComponent<Image>().color == coreColor)
                 {
-                    winner(coreColor);
+                    winnerColor(coreColor);
                 }
             }
         }
@@ -196,35 +191,33 @@ public class gameController1 : MonoBehaviour
             {
                 if (spaceList[col + (row * 7)].GetComponent<Image>().color == coreColor && spaceList[col + (row * 7) + 6].GetComponent<Image>().color == coreColor && spaceList[col + (row * 7) + 12].GetComponent<Image>().color == coreColor && spaceList[col + (row * 7) + 18].GetComponent<Image>().color == coreColor)
                 {
-                    winner(coreColor);
+                    winnerColor(coreColor);
                 }
             }
         }
 
     }
-    void winner(Color winColor)
+    void winnerColor(Color winColor)
     {
-        //winbutton.interactable = true;
-        //winbutton.GetComponent<Image>().color = Color.white;
-        //winText.GetComponent<Text>().color = Color.black;
+        
 
         if (winColor == Color.blue)
         {
-            //winText.text = "blue Wins";
+            
             Debug.Log("blue");
             bluewins.SetActive(true);
             gameovereffect.SetActive(true); 
         }
         else if (winColor == Color.red)
         {
-            //winText.text = "Red Wins";
+            
             Debug.Log("red");
             redwins.SetActive(true);
             gameovereffect.SetActive(true);
         }
         else if (dropCount >=42)
         {
-            //winText.text = "tie";
+           
             Debug.Log("Tie");
             gameovereffect.SetActive(true);
         }
