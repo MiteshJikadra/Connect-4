@@ -24,7 +24,7 @@ public class gameController1 : MonoBehaviour
     public GameObject balleffect;
     public GameObject gameovereffect;
     public static gameController1 GC1;
-    bool isFirsttime;
+    //bool isFirsttime;
    
     private void Awake()
     {
@@ -43,6 +43,12 @@ public class gameController1 : MonoBehaviour
    
     public void Update()
     {
+        //Camera.main.transform.position = new Vector3(
+        // -2.4f, -1.5f, Camera.main.transform.position.z);
+
+        //GameObject g = Instantiate(pieceField, new Vector3(x * -0.8f, y * -0.8f, -1), Quaternion.identity) as GameObject;
+        //g.transform.parent = gameObjectField.transform;
+
         leftButton.interactable = lInteract;
         rightbutton.interactable = rIntract;
         dropbutton.interactable = dIntract;
@@ -97,6 +103,7 @@ public class gameController1 : MonoBehaviour
         if (spaceList[coreSpaces[bottomM[colValue]]].GetComponent<Image>().color == Color.white)
             spaceList[coreSpaces[bottomM[colValue]]].GetComponent<Image>().color = coreColor;
 
+
         bottomM[colValue]--;
         dropCount++;
 
@@ -132,7 +139,9 @@ public class gameController1 : MonoBehaviour
         if (dropCount % 2 == 0)
         {
             coreColor = Color.blue;
-            DropClick();
+            StartCoroutine(a());
+            //DropClick();
+            
         }
             
        
@@ -148,7 +157,7 @@ public class gameController1 : MonoBehaviour
     }
     void winCheck()
     {
-        for (int row = 0; row < 6; row++)
+        for (int row = 0; row < 6; row++)  //Horizontal
         {
             for (int col = 0; col < 4; col++)
             {
@@ -163,7 +172,7 @@ public class gameController1 : MonoBehaviour
             }
         }
 
-        for (int row = 0; row < 3; row++)
+        for (int row = 0; row < 3; row++)  //Vertical
         {
             for (int col = 0; col < 7; col++)
             {
@@ -174,18 +183,18 @@ public class gameController1 : MonoBehaviour
             }
         }
 
-        for (int row = 0; row < 3; row++)
+        for (int row = 0; row < 3; row++)   //Right
         {
             for (int col = 0; col < 4; col++)
             {
-                if (spaceList[col + (row * 4)].GetComponent<Image>().color == coreColor && spaceList[col + (row * 7) + 8].GetComponent<Image>().color == coreColor && spaceList[col + (row * 7) + 16].GetComponent<Image>().color == coreColor && spaceList[col + (row * 7) + 24].GetComponent<Image>().color == coreColor)
+                if (spaceList[col + (row * 7)].GetComponent<Image>().color == coreColor && spaceList[col + (row * 7) + 8].GetComponent<Image>().color == coreColor && spaceList[col + (row * 7) + 16].GetComponent<Image>().color == coreColor && spaceList[col + (row * 7) + 24].GetComponent<Image>().color == coreColor)
                 {
                     winnerColor(coreColor);
                 }
             }
         }
 
-        for (int row = 0; row < 3; row++)
+        for (int row = 0; row < 3; row++)   //Left
         {
             for (int col = 0; col < 4; col++)
             {
@@ -200,7 +209,6 @@ public class gameController1 : MonoBehaviour
     void winnerColor(Color winColor)
     {
         
-
         if (winColor == Color.blue)
         {
             
@@ -225,11 +233,31 @@ public class gameController1 : MonoBehaviour
         rightbutton.interactable = false;
         dropbutton.interactable = false;
     }
-    public void AICode()
+    IEnumerator a()
     {
-        if (isFirsttime)
+        yield return new WaitForSeconds(0.5f);
+       
+        //yield return new WaitForSeconds(1);
+        if (markerpos < 225 && rIntract == true)
         {
-
+            lInteract = true;
+            RightClick();
+            DropClick();
         }
+        else if (markerpos > -225 && lInteract == true)
+        {
+            lInteract = true;
+            LeftClick();
+            DropClick();
+        }
+        
+        StopAllCoroutines();
     }
+    //public void AICode()
+    //{
+    //    if (isFirsttime)
+    //    {
+
+    //    }
+    //}
 }
